@@ -7,9 +7,9 @@ class StorageService {
     await prefs.setString(_tokenKey, token);
   }
 
-  Future<String?> getToken(_tokenKey)async{
+  Future<String?> getToken(tokenKey)async{
     final prefs=await SharedPreferences.getInstance();
-    return prefs.getString(_tokenKey);
+    return prefs.getString(tokenKey);
   }
 
   Future<void> clear()async{

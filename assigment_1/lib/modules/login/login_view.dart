@@ -1,7 +1,6 @@
 import 'package:assigment_1/core/base/base_view.dart';
 import 'package:assigment_1/modules/login/login_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/state_manager.dart';
 
 class LoginView extends BaseView<LoginController> {

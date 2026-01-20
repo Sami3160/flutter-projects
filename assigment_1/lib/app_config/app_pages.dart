@@ -5,13 +5,13 @@ import 'package:assigment_1/modules/profile/profile_view.dart';
 import 'package:get/get.dart';
 
 class AppPages {
-  static const INITIAL=AppRoutes.HOME;
-  static final pages=[
+  static const INITIAL = AppRoutes.HOME;
+  static final pages = [
     GetPage(
-      name:AppRoutes.LOGIN,
-      page: ()=>LoginView(),
-      binding: LoginBinding()
+      name: AppRoutes.LOGIN,
+      page: () => LoginView(),
+      binding: LoginBinding(),
     ),
-    GetPage(name: AppRoutes.HOME, page: ()=>ProfileView())
+    GetPage(name: AppRoutes.HOME, page: () => ProfileView()),
   ];
 }

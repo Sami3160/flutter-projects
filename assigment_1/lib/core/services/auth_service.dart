@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'package:assigment_1/core/network/api_client.dart';
 import 'package:assigment_1/core/network/api_exception.dart';
 
+
+//here we only define api calls
 class AuthService {
   final ApiClient apiClient=ApiClient();
   Future<Map<String, dynamic>> login(

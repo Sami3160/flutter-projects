@@ -9,7 +9,7 @@ class HomePage extends StatelessWidget {
         title: Text("Welcome to Home"),
       ),
       body: Center(
-        child: Text("This is a home page"),
+        child: Text("This is a home page, hello"),
       ),
     );
   }
