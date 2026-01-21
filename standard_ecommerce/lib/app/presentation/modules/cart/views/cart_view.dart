@@ -41,9 +41,32 @@ class CartView extends GetView<CartController> {
                             subtitle: Text(
                               'Qty: ${product.quantity}  Price: \$${product.price}',
                             ),
-                            trailing: Text('Total: \$${product.total}'),
+                            // trailing: Image(image: image),
                           );
                         },
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        color: Colors.grey[200],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Total:',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '\$${cart.total}',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       // ListTile(
                       //   title: Text("Cart No, ${index}"),
@@ -57,17 +80,6 @@ class CartView extends GetView<CartController> {
                 },
               ),
             ),
-            // Container(
-            //   padding: const EdgeInsets.all(16),
-            //   color: Colors.grey[200],
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       const Text('Total:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            //       Text('\$${cart.total}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            //     ],
-            //   ),
-            // ),
           ],
         );
       }),
