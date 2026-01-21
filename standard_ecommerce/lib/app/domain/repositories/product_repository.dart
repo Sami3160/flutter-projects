@@ -1,0 +1,6 @@
+import 'package:standard_ecommerce/app/domain/entities/product.dart';
+
+abstract class ProductRepository {
+  Future<List<Product>> getProducts();
+  Future<List<Product>> searchProducts(String query);
+}
