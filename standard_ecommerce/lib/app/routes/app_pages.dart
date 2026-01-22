@@ -5,6 +5,10 @@ import 'package:standard_ecommerce/app/presentation/modules/cart/bindings/cart_b
 import 'package:standard_ecommerce/app/presentation/modules/cart/views/cart_view.dart';
 import 'package:standard_ecommerce/app/presentation/modules/home/bindings/home_binding.dart';
 import 'package:standard_ecommerce/app/presentation/modules/home/views/home_view.dart';
+import 'package:standard_ecommerce/app/presentation/modules/profile/bindings/profile_binding.dart';
+import 'package:standard_ecommerce/app/presentation/modules/profile/views/profile_view.dart';
+import 'package:standard_ecommerce/app/presentation/modules/settings/bindings/settings_binding.dart';
+import 'package:standard_ecommerce/app/presentation/modules/settings/views/settings_view.dart';
 
 part 'app_routes.dart';
 
@@ -28,6 +32,16 @@ class AppPages {
       name: _Paths.CART,
       page: () => const CartView(),
       binding: CartBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => const ProfileView(),
+      binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.SETTINGS,
+      page: () => const SettingsView(),
+      binding: SettingsBinding(),
     ),
   ];
 }

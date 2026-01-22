@@ -25,6 +25,44 @@ class HomeView extends GetView<HomeController> {
           ),
         ],
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blue),
+              child: Text(
+                'Menu',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
+              onTap: () {
+                Get.back(); // Close drawer
+                // Already on home
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Profile'),
+              onTap: () {
+                Get.back(); // Close drawer
+                Get.toNamed('/profile');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
+                Get.back(); // Close drawer
+                Get.toNamed('/settings');
+              },
+            ),
+          ],
+        ),
+      ),
       body: Column(
         children: [
           Padding(
@@ -35,9 +73,13 @@ class HomeView extends GetView<HomeController> {
                 hintText: 'Search products...',
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.search),
-                  onPressed: () => controller.searchProducts(controller.searchController.text),
+                  onPressed: () => controller.searchProducts(
+                    controller.searchController.text,
+                  ),
                 ),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               onSubmitted: (val) => controller.searchProducts(val),
             ),
@@ -71,7 +113,8 @@ class HomeView extends GetView<HomeController> {
                             product.thumbnail,
                             fit: BoxFit.cover,
                             width: double.infinity,
-                            errorBuilder: (ctx, _, __) => const Icon(Icons.error),
+                            errorBuilder: (ctx, _, __) =>
+                                const Icon(Icons.error),
                           ),
                         ),
                         Padding(
@@ -83,7 +126,9 @@ class HomeView extends GetView<HomeController> {
                                 product.title,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               Text('\$${product.price}'),
                               const SizedBox(height: 5),
@@ -97,7 +142,7 @@ class HomeView extends GetView<HomeController> {
                                   },
                                   child: const Text('Add to Cart'),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
