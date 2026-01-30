@@ -7,18 +7,6 @@ class ProfileController extends GetxController {
   final ordersCount = 5.obs;
   final wishlistCount = 12.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 }

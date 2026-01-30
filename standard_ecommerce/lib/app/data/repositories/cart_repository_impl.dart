@@ -23,6 +23,7 @@ class CartRepositoryImpl implements CartRepository {
     return _mapToEntity(model);
   }
 
+  @override
   Future<List<Cart>> getCartByUser(int userId) async {
     final response = await provider.getCartByUser(userId);
     if (response.status.hasError) {
