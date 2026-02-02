@@ -15,41 +15,39 @@ class ContestDuration {
 }
 
 class Contest {
-  String title;
-  String description;
-  ContestDuration? duration;
+  String? host;
+  String? name;
+  int? duration;
   String? platform;
-  String end;
-  String start;
+  String? vanity;
+  int? startTimeUnix;
 
   Contest({
-    required this.title,
-    required this.description,
-    this.duration,
+    required this.host,
+    required this.name,
+    this.duration,  
     this.platform,
-    required this.end,
-    required this.start,
+    required this.vanity,
+    required this.startTimeUnix,
   });
 
   factory Contest.fromJson(Map<String, dynamic>? json) {
     return Contest(
-      title: json?['title'] as String? ?? '',
-      description: json?['description'] as String? ?? '',
-      duration: json?['duration'] != null
-          ? ContestDuration.fromJson(json?['duration'] as Map<String, dynamic>)
-          : null,
+      host: json?['host'] as String? ?? '',
+      name: json?['name'] as String? ?? '',
+      duration: json?['duration'] as int? ?? 0,
       platform: json?['platform'] as String?,
-      end: json?['end'] as String? ?? '',
-      start: json?['start'] as String? ?? '',
+      vanity: json?['vanity'] as String?,
+      startTimeUnix: json?['startTimeUnix'] as int? ?? 0,
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'title': title,
-    'description': description,
-    'duration': duration?.toJson(),
+    'host': host,
+    'name': name,
+    'duration': duration,
     'platform': platform,
-    'end': end,
-    'start': start,
+    'vanity': vanity,
+    'startTimeUnix': startTimeUnix,
   };
 }

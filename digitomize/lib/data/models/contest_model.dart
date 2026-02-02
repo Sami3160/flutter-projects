@@ -5,35 +5,36 @@ part 'contest_model.g.dart';
 @JsonSerializable()
 class ContestModel extends Contest {
   ContestModel({
-    required this.title,
-    required this.description,
+    this.host,
+    this.name,
     this.duration,
-    required this.end,
-    required this.start,
     this.platform,
+    this.vanity,
+    this.startTimeUnix,
   }) : super(
-         title: title,
-         description: description,
+         host: host,
+         name: name,
          duration: duration,
-         end: end,
-         start: start,
          platform: platform,
+         vanity: vanity,
+         startTimeUnix: startTimeUnix,
        );
 
   @override
-  String title;
+  String? host;
   @override
-  String description;
+  String? name;
   @override
-  ContestDuration? duration;
+  int? duration;
   @override
-  String end;
+  String? vanity;
   @override
-  String start;
+  int? startTimeUnix;
   @override
   String? platform;
 
   factory ContestModel.fromJson(Map<String, dynamic> json) =>
       _$ContestModelFromJson(json);
+  @override
   Map<String, dynamic> toJson() => _$ContestModelToJson(this);
 }

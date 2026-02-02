@@ -57,5 +57,6 @@ class BlogModel extends Blog {
   DateTime updatedAt;
 
   factory BlogModel.fromJson(Map<String, dynamic> json) => _$BlogModelFromJson(json);
+  @override
   Map<String, dynamic> toJson() => _$BlogModelToJson(this);
 }

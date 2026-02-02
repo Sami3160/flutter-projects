@@ -22,7 +22,7 @@ class AuthAPI implements APIRequestRepresentable {
     this.email,
   });
 
-  AuthAPI.login(String username, String repo) : this._(type: AuthType.login);
+  AuthAPI.login({required String email, required String password}) : this._(type: AuthType.login, email: email, password: password);
   AuthAPI.signin(
     String firstName,
     String lastName,
@@ -35,12 +35,13 @@ class AuthAPI implements APIRequestRepresentable {
           email: email,
           password: password,
         );
-  AuthAPI.register(String password, String username)
-      : this._(type: AuthType.login, username: username, password: password);
+  // AuthAPI.register(String password, String username)
+  //     : this._(type: AuthType.login, username: username, password: password);
 
   @override
   String get endpoint => ApiEndpoints.baseUrl;
 
+  @override
   String get path {
     switch (type) {
       case AuthType.signin:
@@ -57,9 +58,11 @@ class AuthAPI implements APIRequestRepresentable {
     return HTTPMethod.post;
   }
 
+  @override
   Map<String, String> get headers =>
       {HttpHeaders.contentTypeHeader: 'application/json'};
 
+  @override
   Map<String, String> get query {
     return {HttpHeaders.contentTypeHeader: 'application/json'};
   }
@@ -67,6 +70,7 @@ class AuthAPI implements APIRequestRepresentable {
   @override
   get body => null;
 
+  @override
   Future request() {
     return APIProvider.instance.request(this);
   }

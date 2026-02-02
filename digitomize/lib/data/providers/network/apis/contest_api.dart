@@ -7,15 +7,17 @@ class ContestAPI implements APIRequestRepresentable {
   ContestAPI.fetchAllContests() : this._();
 
   @override
-  String get endpoint => ApiEndpoints.contestsurl;
+  String get endpoint => ApiEndpoints.alternateUrl;
 
-  String get path => "/allcontest";
+  @override
+  String get path => "/contests";
 
   @override
   HTTPMethod get method {
     return HTTPMethod.get;
   }
 
+  @override
   Map<String, String> get headers => {"Content-Type": "Application/json"};
 
   @override
@@ -24,6 +26,7 @@ class ContestAPI implements APIRequestRepresentable {
   @override
   get body => null;
 
+  @override
   Future request() {
     return APIProvider.instance.request(this);
   }

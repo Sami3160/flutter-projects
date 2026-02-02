@@ -45,5 +45,6 @@ class HackthonModel extends Hackthon {
   int hackthonStartTimeUnix;
 
   factory HackthonModel.fromJson(Map<String, dynamic> json) => _$HackthonModelFromJson(json);
+  @override
   Map<String, dynamic> toJson() => _$HackthonModelToJson(this);
 }
