@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:digitomize/data/providers/network/api_request_representable.dart';
 import 'package:get/get_connect/connect.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class APIProvider {
   static const requestTimeOut = Duration(seconds: 25);
@@ -9,6 +10,17 @@ class APIProvider {
 
   static final _singleton = APIProvider();
   static APIProvider get instance => _singleton;
+
+  APIProvider() {
+    _client.httpClient.addRequestModifier<dynamic>((request) async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      if (token != null && token.isNotEmpty) {
+        request.headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
+      }
+      return request;
+    });
+  }
 
   Future request(APIRequestRepresentable request) async {
     try {
@@ -42,7 +54,8 @@ class APIProvider {
         throw FetchDataException('Internal Server Error');
       default:
         throw FetchDataException(
-            'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
+          'Error occured while Communication with Server with StatusCode : ${response.statusCode}',
+        );
     }
   }
 }
@@ -62,54 +75,46 @@ class AppException implements Exception {
 
 class FetchDataException extends AppException {
   FetchDataException(String? details)
-      : super(
-          code: "fetch-data",
-          message: "Error During Communication",
-          details: details,
-        );
+    : super(
+        code: "fetch-data",
+        message: "Error During Communication",
+        details: details,
+      );
 }
 
 class BadRequestException extends AppException {
   BadRequestException(String? details)
-      : super(
-          code: "invalid-request",
-          message: "Invalid Request",
-          details: details,
-        );
+    : super(
+        code: "invalid-request",
+        message: "Invalid Request",
+        details: details,
+      );
 }
 
 class UnauthorisedException extends AppException {
   UnauthorisedException(String? details)
-      : super(
-          code: "unauthorised",
-          message: "Unauthorised",
-          details: details,
-        );
+    : super(code: "unauthorised", message: "Unauthorised", details: details);
 }
 
 class InvalidInputException extends AppException {
   InvalidInputException(String? details)
-      : super(
-          code: "invalid-input",
-          message: "Invalid Input",
-          details: details,
-        );
+    : super(code: "invalid-input", message: "Invalid Input", details: details);
 }
 
 class AuthenticationException extends AppException {
   AuthenticationException(String? details)
-      : super(
-          code: "authentication-failed",
-          message: "Authentication Failed",
-          details: details,
-        );
+    : super(
+        code: "authentication-failed",
+        message: "Authentication Failed",
+        details: details,
+      );
 }
 
 class TimeOutException extends AppException {
   TimeOutException(String? details)
-      : super(
-          code: "request-timeout",
-          message: "Request TimeOut",
-          details: details,
-        );
+    : super(
+        code: "request-timeout",
+        message: "Request TimeOut",
+        details: details,
+      );
 }

@@ -23,13 +23,13 @@ class AuthAPI implements APIRequestRepresentable {
   });
 
   AuthAPI.login(String username, String repo) : this._(type: AuthType.login);
-  AuthAPI.signup(
+  AuthAPI.signin(
     String firstName,
     String lastName,
     String email,
     String password,
   ) : this._(
-          type: AuthType.signup,
+          type: AuthType.signin,
           firstName: firstName,
           lastName: lastName,
           email: email,
@@ -43,10 +43,10 @@ class AuthAPI implements APIRequestRepresentable {
 
   String get path {
     switch (type) {
+      case AuthType.signin:
+        return "/users/register";
       case AuthType.login:
-        return "/$username/$username";
-      case AuthType.logout:
-        return "/login";
+        return "/users/login";
       default:
         return "";
     }
