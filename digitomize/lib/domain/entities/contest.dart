@@ -20,25 +20,31 @@ class Contest {
   int? duration;
   String? platform;
   String? vanity;
+  String? url;
   int? startTimeUnix;
 
   Contest({
     required this.host,
     required this.name,
-    this.duration,  
+    this.duration,
     this.platform,
     required this.vanity,
+    this.url,
     required this.startTimeUnix,
   });
 
   factory Contest.fromJson(Map<String, dynamic>? json) {
+    if (json == null) {
+      return Contest(host: '', name: '', vanity: '', url: '', startTimeUnix: 0);
+    }
     return Contest(
-      host: json?['host'] as String? ?? '',
-      name: json?['name'] as String? ?? '',
-      duration: json?['duration'] as int? ?? 0,
-      platform: json?['platform'] as String?,
-      vanity: json?['vanity'] as String?,
-      startTimeUnix: json?['startTimeUnix'] as int? ?? 0,
+      host: (json['host'] ?? '').toString(),
+      name: (json['name'] ?? '').toString(),
+      duration: int.tryParse(json['duration']?.toString() ?? '') ?? 0,
+      platform: json['platform']?.toString() ?? '',
+      vanity: json['vanity']?.toString() ?? '',
+      url: json['url']?.toString() ?? '',
+      startTimeUnix: int.tryParse(json['startTimeUnix']?.toString() ?? '') ?? 0,
     );
   }
 
@@ -48,6 +54,7 @@ class Contest {
     'duration': duration,
     'platform': platform,
     'vanity': vanity,
+    'url': url,
     'startTimeUnix': startTimeUnix,
   };
 }

@@ -1,3 +1,5 @@
+import 'package:digitomize/domain/entities/user.dart';
+
 class Blog {
   Blog({
     required this.id,
@@ -16,7 +18,7 @@ class Blog {
   String title;
   String content;
   String category;
-  String owner;
+  User owner;
   String? thumbnailUrl;
   List<String>? likes;
   List<String>? comments;
@@ -24,34 +26,78 @@ class Blog {
   DateTime createdAt;
   DateTime updatedAt;
 
-
   factory Blog.fromJson(Map<String, dynamic>? json) {
-    return Blog(
-      id: json?['id'] as String,
-      title: json?['title'] as String,
-      content: json?['content'] as String,
-      category: json?['category'] as String,
-      owner: json?['owner'] as String,
-      thumbnailUrl: json?['thumbnailUrl'] as String? ?? '',
-      likes: json?['likes'] as List<String>? ?? [],
-      comments: json?['comments'] as List<String>? ?? [],
-      tags: json?['tags'] as List<String>? ?? [],
-      createdAt: json?['createdAt'] as DateTime,
-      updatedAt: json?['updatedAt'] as DateTime,
-    );
+    if (json == null) {
+      return Blog(
+        id: '',
+        title: '',
+        content: '',
+        category: '',
+        owner: User(id: '0', username: 'Unknown'),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+    }
+
+    try {
+      // Robust Owner Parsing
+      User owner;
+      final ownerData = json['owner'];
+      if (ownerData is Map<String, dynamic>) {
+        owner = User.fromJson(ownerData);
+      } else if (ownerData is String) {
+        owner = User(id: '', username: ownerData);
+      } else {
+        owner = User(id: '0', username: 'Unknown Owner');
+      }
+
+      return Blog(
+        id: (json['id'] ?? json['_id'] ?? '').toString(),
+        title: (json['title'] ?? '').toString(),
+        content: (json['content'] ?? '').toString(),
+        category: (json['category'] ?? '').toString(),
+        owner: owner,
+        thumbnailUrl: json['thumbnailUrl']?.toString() ?? '',
+        likes:
+            (json['likes'] as List?)?.map((e) => e.toString()).toList() ?? [],
+        comments:
+            (json['comments'] as List?)?.map((e) => e.toString()).toList() ??
+            [],
+        tags: (json['tags'] as List?)?.map((e) => e.toString()).toList() ?? [],
+        createdAt: json['createdAt'] != null
+            ? DateTime.tryParse(json['createdAt'].toString()) ?? DateTime.now()
+            : DateTime.now(),
+        updatedAt: json['updatedAt'] != null
+            ? DateTime.tryParse(json['updatedAt'].toString()) ?? DateTime.now()
+            : DateTime.now(),
+      );
+    } catch (e) {
+      print("❌ Error parsing Blog object: $e");
+      print("Problematic JSON: $json");
+      // Fallback object to prevent the whole list from failing
+      return Blog(
+        id: (json['id'] ?? json['_id'] ?? '').toString(),
+        title: 'Error loading blog',
+        content: '',
+        category: '',
+        owner: User(id: '0', username: 'Error'),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+    }
   }
 
   Map<String, dynamic> toJson() => {
-    'id':id,
-    'title':title,
-    'content':content,
-    'category':category,
-    'owner':owner,
-    'thumbnailUrl':thumbnailUrl,
-    'likes':likes,
-    'comments':comments,
-    'tags':tags,
-    'createdAt':createdAt,
-    'updatedAt':updatedAt,
+    'id': id,
+    'title': title,
+    'content': content,
+    'category': category,
+    'owner': owner.toJson(),
+    'thumbnailUrl': thumbnailUrl,
+    'likes': likes,
+    'comments': comments,
+    'tags': tags,
+    'createdAt': createdAt,
+    'updatedAt': updatedAt,
   };
 }

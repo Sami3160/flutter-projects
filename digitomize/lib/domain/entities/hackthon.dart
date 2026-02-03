@@ -1,34 +1,44 @@
 class Hackthon {
   Hackthon({
-    required this.host,
-    required this.name,
-    required this.vanity,
-    required this.url,
-    required this.duration,
-    required this.registrationStartTimeUnix,
-    required this.registrationEndTimeUnix,
-    required this.hackthonStartTimeUnix,
+    this.host,
+    this.name,
+    this.vanity,
+    this.url,
+    this.duration,
+    this.registrationStartTimeUnix,
+    this.registrationEndTimeUnix,
+    this.hackathonStartTimeUnix,
   });
-  String host;
-  String name;
-  String vanity;
-  String url;
-  int duration;
-  int registrationStartTimeUnix;
-  int registrationEndTimeUnix;
-  int hackthonStartTimeUnix;
-
+  String? host;
+  String? name;
+  String? vanity;
+  String? url;
+  int? duration;
+  int? registrationStartTimeUnix;
+  int? registrationEndTimeUnix;
+  int? hackathonStartTimeUnix;
 
   factory Hackthon.fromJson(Map<String, dynamic>? json) {
+    if (json == null) {
+      return Hackthon();
+    }
     return Hackthon(
-      host: json?['host'] as String,
-      name: json?['name'] as String,
-      vanity: json?['vanity'] as String,
-      url: json?['url'] as String,
-      duration: json?['duration'] as int,
-      registrationStartTimeUnix: json?['registrationStartTimeUnix'] as int,
-      registrationEndTimeUnix: json?['registrationEndTimeUnix'] as int,
-      hackthonStartTimeUnix: json?['hackthonStartTimeUnix'] as int,
+      host: json['host']?.toString(),
+      name: json['name']?.toString(),
+      vanity: json['vanity']?.toString(),
+      url: json['url']?.toString(),
+      duration: json['duration'] != null
+          ? int.tryParse(json['duration'].toString()) ?? 0
+          : null,
+      registrationStartTimeUnix: json['registrationStartTimeUnix'] != null
+          ? int.tryParse(json['registrationStartTimeUnix'].toString()) ?? 0
+          : null,
+      registrationEndTimeUnix: json['registrationEndTimeUnix'] != null
+          ? int.tryParse(json['registrationEndTimeUnix'].toString()) ?? 0
+          : null,
+      hackathonStartTimeUnix: json['hackathonStartTimeUnix'] != null
+          ? int.tryParse(json['hackathonStartTimeUnix'].toString()) ?? 0
+          : null,
     );
   }
 
@@ -40,6 +50,6 @@ class Hackthon {
     'duration': duration,
     'registrationStartTimeUnix': registrationStartTimeUnix,
     'registrationEndTimeUnix': registrationEndTimeUnix,
-    'hackthonStartTimeUnix': hackthonStartTimeUnix,
+    'hackathonStartTimeUnix': hackathonStartTimeUnix,
   };
 }

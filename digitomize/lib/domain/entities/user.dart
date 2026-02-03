@@ -11,6 +11,7 @@ class User {
     this.institute,
     this.bio,
     this.lcUsername,
+    this.profileUrl
   });
 
   String id;
@@ -24,35 +25,51 @@ class User {
   String? institute;
   String? bio;
   String? lcUsername;
+  String? profileUrl;
 
   factory User.fromJson(Map<String, dynamic>? json) {
+    if (json == null) {
+      return User(id: '', username: 'Guest');
+    }
+
+    // Handle case where user data might be nested under a 'user' key
+    final Map<String, dynamic> data =
+        json.containsKey('user') && json['user'] is Map<String, dynamic>
+        ? json['user'] as Map<String, dynamic>
+        : json;
+
     return User(
-      id:json?['id'] as String,
-      username: json?['username'] as String ,
-      email: json?['email'] as String? ?? '',
-      firstName: json?['firstName'] as String? ?? '',
-      lastName: json?['lastName'] as String? ?? '',
-      accessToken: json?['accessToken'] as String? ?? '',
-      refreshToken: json?['refreshToken'] as String? ?? '',
-      address: json?['address'] as String? ?? '',
-      institute: json?['institute'] as String? ?? '',
-      bio: json?['bio'] as String? ?? '',
-      lcUsername: json?['lcUsername'] as String? ?? '',
-    
+      // Use ?? to provide defaults if keys are missing or null,
+      // and handle both 'id' and '_id' common in MongoDB backends
+      id: (data['id'] ?? data['_id'] ?? '').toString(),
+      username: (data['username'] ?? '').toString(),
+      email: data['email']?.toString() ?? '',
+      firstName: data['firstName']?.toString() ?? '',
+      lastName: data['lastName']?.toString() ?? '',
+      // AccessToken might be in the root response if 'user' was a nested key
+      accessToken: (json['token'] ?? data['accessToken'] ?? '').toString(),
+      refreshToken: (json['refreshToken'] ?? data['refreshToken'] ?? '')
+          .toString(),
+      address: data['address']?.toString() ?? '',
+      institute: data['institute']?.toString() ?? '',
+      bio: data['bio']?.toString() ?? '',
+      lcUsername: data['lcUsername']?.toString() ?? '',
+      profileUrl: data['profileUrl']?.toString() ?? '',
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'id':id,
-    'username':username,
-    'email':email,
-    'firstName':firstName,
-    'lastName':lastName,  
-    'accessToken':accessToken,
-    'refreshToken':refreshToken,
-    'address':address,
-    'institute':institute,
-    'bio':bio,
-    'lcUsername':lcUsername,
+    'id': id,
+    'username': username,
+    'email': email,
+    'firstName': firstName,
+    'lastName': lastName,
+    'accessToken': accessToken,
+    'refreshToken': refreshToken,
+    'address': address,
+    'institute': institute,
+    'bio': bio,
+    'lcUsername': lcUsername,
+    'profileUrl': profileUrl,
   };
 }
