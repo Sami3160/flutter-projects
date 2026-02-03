@@ -8,6 +8,7 @@ abstract class Routes {
   static const SIGNUP = _Paths.SIGNUP;
   static const BLOGS = _Paths.BLOGS;
   static const CONTESTS = _Paths.CONTESTS;
+  static const HACKATHONS = _Paths.HACKATHONS;
 }
 
 abstract class _Paths {
@@ -17,4 +18,5 @@ abstract class _Paths {
   static const SIGNUP = '/signup';
   static const BLOGS = '/blogs';
   static const CONTESTS = '/contests';
+  static const HACKATHONS = '/hackathons';
 }

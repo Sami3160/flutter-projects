@@ -16,7 +16,7 @@ HackthonModel _$HackthonModelFromJson(Map<String, dynamic> json) =>
       registrationStartTimeUnix: (json['registrationStartTimeUnix'] as num)
           .toInt(),
       registrationEndTimeUnix: (json['registrationEndTimeUnix'] as num).toInt(),
-      hackthonStartTimeUnix: (json['hackthonStartTimeUnix'] as num).toInt(),
+      hackathonStartTimeUnix: (json['hackathonStartTimeUnix'] as num).toInt(),
     );
 
 Map<String, dynamic> _$HackthonModelToJson(HackthonModel instance) =>
@@ -28,5 +28,5 @@ Map<String, dynamic> _$HackthonModelToJson(HackthonModel instance) =>
       'duration': instance.duration,
       'registrationStartTimeUnix': instance.registrationStartTimeUnix,
       'registrationEndTimeUnix': instance.registrationEndTimeUnix,
-      'hackthonStartTimeUnix': instance.hackthonStartTimeUnix,
+      'hackathonStartTimeUnix': instance.hackathonStartTimeUnix,
     };

@@ -23,6 +23,7 @@ class APIProvider {
   }
 
   Future request(APIRequestRepresentable request) async {
+    print('🚀 [API REQ] ${request.method.string} ${request.url}');
     try {
       final response = await _client.request(
         request.url,
@@ -31,11 +32,17 @@ class APIProvider {
         query: request.query,
         body: request.body,
       );
+      print('✅ [API RES] ${response.statusCode} - ${request.url}');
       return _returnResponse(response);
-    } on TimeoutException catch (_) {
+    } on TimeoutException catch (e) {
+      print('⏰ [API TIMEOUT] $e');
       throw TimeOutException(null);
-    } on SocketException {
+    } on SocketException catch (e) {
+      print('🌐 [API SOCKET ERR] $e');
       throw FetchDataException('No Internet connection');
+    } catch (e) {
+      print('❌ [API UNEXPECTED ERR] $e');
+      rethrow;
     }
   }
 

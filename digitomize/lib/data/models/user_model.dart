@@ -16,6 +16,7 @@ class UserModel extends User {
     this.institute,
     this.bio,
     this.lcUsername,
+    this.profileUrl
   }) : super(
          id: id,
          username: username,
@@ -28,6 +29,7 @@ class UserModel extends User {
          institute: institute,
          bio: bio,
          lcUsername: lcUsername,
+         profileUrl: profileUrl,
        );
 
   @override
@@ -52,6 +54,8 @@ class UserModel extends User {
   String? bio;
   @override
   String? lcUsername;
+  @override
+  String? profileUrl;
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
 

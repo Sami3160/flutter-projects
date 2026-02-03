@@ -3,7 +3,7 @@ import 'package:digitomize/data/providers/network/api_endpoints.dart';
 import 'package:digitomize/data/providers/network/api_provider.dart';
 import 'package:digitomize/data/providers/network/api_request_representable.dart';
 
-enum AuthType { login, logout, signin }
+enum AuthType { login, logout, signin, profile   }
 
 class AuthAPI implements APIRequestRepresentable {
   final AuthType type;
@@ -22,21 +22,21 @@ class AuthAPI implements APIRequestRepresentable {
     this.email,
   });
 
-  AuthAPI.login({required String email, required String password}) : this._(type: AuthType.login, email: email, password: password);
+  AuthAPI.login({required String email, required String password})
+    : this._(type: AuthType.login, email: email, password: password);
   AuthAPI.signin(
     String firstName,
     String lastName,
     String email,
     String password,
   ) : this._(
-          type: AuthType.signin,
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          password: password,
-        );
-  // AuthAPI.register(String password, String username)
-  //     : this._(type: AuthType.login, username: username, password: password);
+        type: AuthType.signin,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+      );
+  AuthAPI.profile():this._(type: AuthType.profile);
 
   @override
   String get endpoint => ApiEndpoints.baseUrl;
@@ -48,6 +48,9 @@ class AuthAPI implements APIRequestRepresentable {
         return "/users/register";
       case AuthType.login:
         return "/users/login";
+
+      case AuthType.profile:
+        return "/users/profile";
       default:
         return "";
     }
@@ -55,20 +58,40 @@ class AuthAPI implements APIRequestRepresentable {
 
   @override
   HTTPMethod get method {
-    return HTTPMethod.post;
+    switch (type) {
+      case AuthType.profile:
+        return HTTPMethod.get;
+      default:
+        return HTTPMethod.post;
+    }
   }
 
   @override
-  Map<String, String> get headers =>
-      {HttpHeaders.contentTypeHeader: 'application/json'};
+  Map<String, String> get headers => {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  };
 
   @override
-  Map<String, String> get query {
-    return {HttpHeaders.contentTypeHeader: 'application/json'};
+  Map<String, String>? get query {
+    return null;
   }
 
   @override
-  get body => null;
+  get body {
+    switch (type) {
+      case AuthType.login:
+        return {"email": email, "password": password};
+      case AuthType.signin:
+        return {
+          "firstName": firstName,
+          "lastName": lastName,
+          "email": email,
+          "password": password,
+        };
+      default:
+        return null;
+    }
+  }
 
   @override
   Future request() {
