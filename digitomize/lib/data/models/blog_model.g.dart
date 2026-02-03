@@ -11,7 +11,7 @@ BlogModel _$BlogModelFromJson(Map<String, dynamic> json) => BlogModel(
   title: json['title'] as String,
   content: json['content'] as String,
   category: json['category'] as String,
-  owner: json['owner'] as String,
+  owner: User.fromJson(json['owner'] as Map<String, dynamic>?),
   createdAt: DateTime.parse(json['createdAt'] as String),
   updatedAt: DateTime.parse(json['updatedAt'] as String),
   likes: (json['likes'] as List<dynamic>?)?.map((e) => e as String).toList(),

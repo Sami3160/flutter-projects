@@ -1,8 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:digitomize/domain/entities/blog.dart';
+import 'package:digitomize/domain/entities/user.dart';
 part 'blog_model.g.dart';
-
-
 
 @JsonSerializable()
 class BlogModel extends Blog {
@@ -19,19 +18,18 @@ class BlogModel extends Blog {
     this.tags,
     this.thumbnailUrl,
   }) : super(
-    id: id,
-    title: title,
-    content: content,
-    category: category,
-    owner: owner,
-    createdAt: createdAt,
-    updatedAt: updatedAt,
-    likes: likes,
-    comments: comments,
-    tags: tags,
-    thumbnailUrl: thumbnailUrl,
-  );
-
+         id: id,
+         title: title,
+         content: content,
+         category: category,
+         owner: owner,
+         createdAt: createdAt,
+         updatedAt: updatedAt,
+         likes: likes,
+         comments: comments,
+         tags: tags,
+         thumbnailUrl: thumbnailUrl,
+       );
 
   @override
   String id;
@@ -42,7 +40,7 @@ class BlogModel extends Blog {
   @override
   String category;
   @override
-  String owner;
+  User owner;
   @override
   String? thumbnailUrl;
   @override
@@ -56,7 +54,8 @@ class BlogModel extends Blog {
   @override
   DateTime updatedAt;
 
-  factory BlogModel.fromJson(Map<String, dynamic> json) => _$BlogModelFromJson(json);
+  factory BlogModel.fromJson(Map<String, dynamic> json) =>
+      _$BlogModelFromJson(json);
   @override
   Map<String, dynamic> toJson() => _$BlogModelToJson(this);
 }

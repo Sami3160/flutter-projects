@@ -499,7 +499,7 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-   Widget _buildHackathonGrid() {
+  Widget _buildHackathonGrid() {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
