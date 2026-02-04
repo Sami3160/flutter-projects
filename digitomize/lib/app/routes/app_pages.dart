@@ -1,3 +1,5 @@
+import 'package:digitomize/presentation/pages/blogs/blog_detail_binding.dart';
+import 'package:digitomize/presentation/pages/blogs/blog_detail_view.dart';
 import 'package:digitomize/presentation/pages/blogs/blogs_binding.dart';
 import 'package:digitomize/presentation/pages/blogs/blogs_view.dart';
 import 'package:digitomize/presentation/pages/contests/contests_binding.dart';
@@ -42,6 +44,11 @@ class AppPages {
       name: _Paths.BLOGS,
       page: () => const BlogsView(),
       binding: BlogsBinding(),
+    ),
+    GetPage(
+      name: _Paths.BLOG_DETAIL,
+      page: () => const BlogDetailView(),
+      binding: BlogDetailBinding(),
     ),
   ];
 }

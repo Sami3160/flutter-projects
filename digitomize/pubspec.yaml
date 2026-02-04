@@ -41,6 +41,7 @@ dependencies:
   google_fonts: ^6.1.0
   intl: ^0.18.1
   url_launcher: ^6.1.12
+  flutter_widget_from_html_core: any
 
 dev_dependencies:
   flutter_test:

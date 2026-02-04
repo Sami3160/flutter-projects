@@ -1,6 +1,7 @@
 import 'package:digitomize/app/config/app_colors.dart';
 import 'package:digitomize/presentation/controllers/home_controller.dart';
 import 'package:digitomize/presentation/widgets/app_drawer.dart';
+import 'package:digitomize/presentation/widgets/grid_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,93 +34,106 @@ class HomeView extends GetView<HomeController> {
                   const SizedBox(height: 60),
 
                   // Hackathons Section
-                  Obx(()=>(controller.selectedFilter.value == "All" ||
-                          controller.selectedFilter.value == "Contests")?Container(
-                        child: Column(
-                          children: [
-                            Text(
-                              "Upcoming Contests",
-                              style: GoogleFonts.inter(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.textPrimary,
-                              ),
+                  Obx(
+                    () =>
+                        (controller.selectedFilter.value == "All" ||
+                            controller.selectedFilter.value == "Contests")
+                        ? Container(
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Upcoming Contests",
+                                  style: GoogleFonts.inter(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                Obx(
+                                  () => controller.isLoading.value
+                                      ? const Center(
+                                          child: CircularProgressIndicator(
+                                            color: AppColors.primary,
+                                          ),
+                                        )
+                                      : _buildContestGrid(),
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 20),
-                            Obx(
-                              () => controller.isLoading.value
-                                  ? const Center(
-                                      child: CircularProgressIndicator(
-                                        color: AppColors.primary,
-                                      ),
-                                    )
-                                  : _buildContestGrid(),
-                            ),
-                          ],
-                        ),
-                      ):SizedBox.shrink(),),
-
-                  const SizedBox(height: 60), Obx(()=>(controller.selectedFilter.value == "All" ||
-                          controller.selectedFilter.value == "Hackathons")?Container(
-                        child: Column(
-                          children: [
-                            Text(
-                              "Upcoming Hackthons",
-                              style: GoogleFonts.inter(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Obx(
-                              () => controller.isLoading.value
-                                  ? const Center(
-                                      child: CircularProgressIndicator(
-                                        color: AppColors.primary,
-                                      ),
-                                    )
-                                  : _buildHackathonGrid(),
-                            ),
-                          ],
-                        ),
-                      ):SizedBox.shrink(),),
+                          )
+                        : SizedBox.shrink(),
+                  ),
 
                   const SizedBox(height: 60),
-                  Obx(()=>(controller.selectedFilter.value == "All" ||
-                          controller.selectedFilter.value == "Blogs")?
-                  Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          "Daily Blogs",
-                          style: GoogleFonts.inter(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          "Explore our blog: your coding corner with practical tips.",
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Obx(
-                          () => controller.isLoading.value
-                              ? const SizedBox.shrink()
-                              : _buildBlogsGrid(),
-                        ),
-                      ],
-                    ),
-                  ) : SizedBox.shrink(),),
-                  
+                  Obx(
+                    () =>
+                        (controller.selectedFilter.value == "All" ||
+                            controller.selectedFilter.value == "Hackathons")
+                        ? Container(
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Upcoming Hackthons",
+                                  style: GoogleFonts.inter(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                Obx(
+                                  () => controller.isLoading.value
+                                      ? const Center(
+                                          child: CircularProgressIndicator(
+                                            color: AppColors.primary,
+                                          ),
+                                        )
+                                      : _buildHackathonGrid(),
+                                ),
+                              ],
+                            ),
+                          )
+                        : SizedBox.shrink(),
+                  ),
+
+                  const SizedBox(height: 60),
+                  Obx(
+                    () =>
+                        (controller.selectedFilter.value == "All" ||
+                            controller.selectedFilter.value == "Blogs")
+                        ? Container(
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Daily Blogs",
+                                  style: GoogleFonts.inter(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  "Explore our blog: your coding corner with practical tips.",
+                                  style: GoogleFonts.inter(
+                                    fontSize: 14,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                Obx(
+                                  () => controller.isLoading.value
+                                      ? const SizedBox.shrink()
+                                      : _buildBlogsGrid(),
+                                ),
+                              ],
+                            ),
+                          )
+                        : SizedBox.shrink(),
+                  ),
 
                   // Blogs Section
-                  
                   const SizedBox(height: 100), // Bottom spacing
                 ],
               ),
@@ -160,7 +174,6 @@ class HomeView extends GetView<HomeController> {
   }
 
   Widget _buildHeroSection() {
-    // Removed unused variable and fixed syntax error
     return Center(
       child: Column(
         children: [
@@ -171,7 +184,7 @@ class HomeView extends GetView<HomeController> {
                 TextSpan(
                   text: "All at ",
                   style: GoogleFonts.outfit(
-                    fontSize: 48, // Reduced from 64
+                    fontSize: 48, 
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
                   ),
@@ -201,7 +214,7 @@ class HomeView extends GetView<HomeController> {
                     child: Text(
                       "one",
                       style: GoogleFonts.outfit(
-                        fontSize: 48, // Reduced from 64
+                        fontSize: 48, 
                         fontWeight: FontWeight.w900,
                         color: AppColors.background,
                       ),
@@ -211,7 +224,7 @@ class HomeView extends GetView<HomeController> {
                 TextSpan(
                   text: " place",
                   style: GoogleFonts.outfit(
-                    fontSize: 48, // Reduced from 64
+                    fontSize: 48, 
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
                   ),
@@ -305,8 +318,10 @@ class HomeView extends GetView<HomeController> {
     // Use Clearbit Logo API
     final logoUrl = "https://logo.clearbit.com/$host.com";
     final logoMap = {
-      "devfolio": "https://yt3.googleusercontent.com/3EOobmaqaLu33EqKU4UyE3Wn-JdiES8gySvLl3t6liHxkYOtBsEkdkcmFYI4loAd_ghJqGle=s900-c-k-c0x00ffffff-no-rj",
-      "devpost": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_bLVz0qPKC8X2OVOspl3_xC5B20HfCB6Tdg&s",
+      "devfolio":
+          "https://yt3.googleusercontent.com/3EOobmaqaLu33EqKU4UyE3Wn-JdiES8gySvLl3t6liHxkYOtBsEkdkcmFYI4loAd_ghJqGle=s900-c-k-c0x00ffffff-no-rj",
+      "devpost":
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_bLVz0qPKC8X2OVOspl3_xC5B20HfCB6Tdg&s",
       "codechef":
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMHK6xbsYOjPIQqavwttsH872LvAM9J0oNzA&s",
       "codingninjas":
@@ -574,7 +589,7 @@ class HomeView extends GetView<HomeController> {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          "${(hackathon.duration!/(24*60)).round()} days",
+                          "${(hackathon.duration! / (24 * 60)).round()} days",
                           style: GoogleFonts.inter(
                             color: AppColors.textSecondary,
                             fontSize: 12,
@@ -728,26 +743,4 @@ class HomeView extends GetView<HomeController> {
       }).toList(),
     );
   }
-}
-
-class GridPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFF1A1A1A)
-      ..strokeWidth = 1;
-
-    const double step = 60;
-
-    for (double x = 0; x < size.width; x += step) {
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
-    }
-
-    for (double y = 0; y < size.height; y += step) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

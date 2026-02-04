@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:digitomize/domain/entities/blog.dart';
+import 'package:digitomize/domain/entities/comment.dart';
 import 'package:digitomize/domain/entities/user.dart';
 part 'blog_model.g.dart';
 
@@ -46,7 +47,7 @@ class BlogModel extends Blog {
   @override
   List<String>? likes;
   @override
-  List<String>? comments;
+  List<Comment>? comments;
   @override
   List<String>? tags;
   @override

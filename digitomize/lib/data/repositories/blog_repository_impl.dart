@@ -14,7 +14,7 @@ class BlogRepositoryImpl implements BlogRepository {
   @override
   Future<Blog> getOneBlog(String id) async {
     final response = await BlogAPI.getOneBlog(id).request();
-    return Blog.fromJson(response);
+    return Blog.fromJson(response['blogData']);
   }
 
   @override

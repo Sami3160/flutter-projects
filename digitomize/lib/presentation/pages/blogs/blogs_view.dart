@@ -1,5 +1,6 @@
 import 'package:digitomize/app/config/app_colors.dart';
 import 'package:digitomize/presentation/controllers/blog_controller.dart';
+import 'package:digitomize/presentation/widgets/grid_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,58 +27,125 @@ class BlogsView extends GetView<BlogController> {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.article_outlined,
-                size: 80,
-                color: AppColors.primary,
-              ),
-            ),
-            const SizedBox(height: 32),
-            Text(
-              'Welcome to Daily Blogs',
-              style: GoogleFonts.outfit(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Container(
+      body: Stack(
+        children: [
+          Positioned.fill(child: CustomPaint(painter: GridPainter())),
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 80),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.article_outlined,
+                      size: 80,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
                   Text(
-                    "Blogs",
-                    style: GoogleFonts.inter(
-                      fontSize: 24,
+                    'Welcome to Daily Blogs',
+                    style: GoogleFonts.outfit(
+                      fontSize: 32,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  Obx(
-                    () => controller.isLoading.value
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                              color: AppColors.primary,
+                  const SizedBox(height: 16),
+                  Container(
+                    child: Column(
+                      children: [
+                        Text(
+                          "Blogs",
+                          style: GoogleFonts.inter(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Obx(
+                          () => controller.isLoading.value
+                              ? const Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.primary,
+                                  ),
+                                )
+                              : _buildBlogsGrid(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Obx(
+                          () => ElevatedButton.icon(
+                            onPressed: () => controller.loadPrevious(),
+                            icon: const Icon(Icons.arrow_back_rounded),
+                            label: Text(
+                              'Previous',
+                              style: GoogleFonts.inter(
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          )
-                        : _buildBlogsGrid(),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary.withOpacity(
+                                0.1,
+                              ),
+                              foregroundColor: controller.hasPrevious.value
+                                  ? AppColors.primary
+                                  : AppColors.textSecondary,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Obx(
+                          () => ElevatedButton.icon(
+                            onPressed: () => controller.loadMore(),
+                            icon: const Icon(Icons.arrow_forward_rounded),
+                            label: Text(
+                              'Next',
+                              style: GoogleFonts.inter(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary.withOpacity(
+                                0.1,
+                              ),
+                              foregroundColor: controller.hasNext.value
+                                  ? AppColors.primary
+                                  : AppColors.textSecondary,
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -130,6 +198,34 @@ class BlogsView extends GetView<BlogController> {
                         fontWeight: FontWeight.bold,
                       ),
                       overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  TextButton.icon(
+                    onPressed: () {
+                      Get.toNamed('/blog-detail', arguments: {"blogId":blog.id});
+                    },
+                    icon: const Icon(
+                      Icons.open_in_new_rounded,
+                      size: 16,
+                      color: AppColors.primary,
+                    ),
+                    label: Text(
+                      'View',
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      backgroundColor: AppColors.primary.withOpacity(0.1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
                 ],

@@ -10,7 +10,7 @@ class BlogController extends GetxController{
   final RxBool isLoading = true.obs;
   final RxString selectedFilter = 'All'.obs;
   final RxInt page = 1.obs;
-  final RxInt pageSize = 10.obs;
+  final RxInt pageSize = 4.obs;
   final RxBool hasNext = true.obs;
   final RxBool hasPrevious = false.obs;
   @override
@@ -33,7 +33,9 @@ class BlogController extends GetxController{
   }
 
   void loadPrevious() {
-    if (hasPrevious.value) {
+    print("load previous triggered ${page.value}");
+    if (hasPrevious.value && page.value > 1) {
+      print("Loading previous page ${page.value}");
       page.value--;
       fetchBlogs();
     }
@@ -42,6 +44,16 @@ class BlogController extends GetxController{
   Future<void> fetchBlogs() async {
     try {
       final blogs = await getBlogsUseCase.execute(GetBlogsParams(page:page.value, pageSize : pageSize.value));
+      if(blogs.length<pageSize.value){
+        hasNext.value=false;
+      }else{
+        hasNext.value=true;
+      }
+      if(page.value>1){
+        hasPrevious.value=true;
+      }else{
+        hasPrevious.value=false;
+      }
       this.blogs.value = blogs;
     } catch (e) {
       print("❌ BlogController Error: $e");
