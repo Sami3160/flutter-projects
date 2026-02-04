@@ -1,3 +1,4 @@
+import 'package:digitomize/domain/entities/comment.dart';
 import 'package:digitomize/domain/entities/user.dart';
 
 class Blog {
@@ -21,7 +22,7 @@ class Blog {
   User owner;
   String? thumbnailUrl;
   List<String>? likes;
-  List<String>? comments;
+  List<Comment>? comments;
   List<String>? tags;
   DateTime createdAt;
   DateTime updatedAt;
@@ -51,6 +52,24 @@ class Blog {
         owner = User(id: '0', username: 'Unknown Owner');
       }
 
+      // Parse comments - handle both populated objects and string IDs
+      List<Comment> comments = [];
+      if (json['comments'] is List) {
+        comments = (json['comments'] as List).map((e) {
+          if (e is Map<String, dynamic>) {
+            return Comment.fromJson(e);
+          } else {
+            // If it's just an ID string, create a placeholder comment
+            return Comment(
+              id: e.toString(),
+              content: '',
+              author: User(id: '', username: 'Unknown'),
+              createdAt: DateTime.now(),
+            );
+          }
+        }).toList();
+      }
+
       return Blog(
         id: (json['id'] ?? json['_id'] ?? '').toString(),
         title: (json['title'] ?? '').toString(),
@@ -60,9 +79,7 @@ class Blog {
         thumbnailUrl: json['thumbnailUrl']?.toString() ?? '',
         likes:
             (json['likes'] as List?)?.map((e) => e.toString()).toList() ?? [],
-        comments:
-            (json['comments'] as List?)?.map((e) => e.toString()).toList() ??
-            [],
+        comments: comments,
         tags: (json['tags'] as List?)?.map((e) => e.toString()).toList() ?? [],
         createdAt: json['createdAt'] != null
             ? DateTime.tryParse(json['createdAt'].toString()) ?? DateTime.now()
@@ -95,7 +112,7 @@ class Blog {
     'owner': owner.toJson(),
     'thumbnailUrl': thumbnailUrl,
     'likes': likes,
-    'comments': comments,
+    'comments': comments?.map((c) => c.toJson()).toList(),
     'tags': tags,
     'createdAt': createdAt,
     'updatedAt': updatedAt,
