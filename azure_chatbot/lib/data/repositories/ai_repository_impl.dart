@@ -16,7 +16,18 @@ class AiRepositoryImpl extends AiRepository {
         systemPrompt: systemPrompt ?? "",
       );
       final response = await api.request();
-      return response.toString();
+
+      // API returns: {"response": "...", "status": "success"}
+      if (response is Map<String, dynamic>) {
+        final aiResponse = response['response'];
+        if (aiResponse != null) {
+          return aiResponse.toString();
+        } else {
+          throw Exception('API response missing "response" field');
+        }
+      } else {
+        throw Exception('Unexpected response format: ${response.runtimeType}');
+      }
     } catch (e) {
       print("Error in ai_repository_impl.dart ${e.toString()}");
       throw Exception(e.toString());

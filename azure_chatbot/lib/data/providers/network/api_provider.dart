@@ -32,6 +32,8 @@ class APIProvider {
         query: request.query,
         body: request.body,
       );
+      print("actual response ${response.body}");
+
       print('✅ [API RES] ${response.statusCode} - ${request.url}');
       return _returnResponse(response);
     } on TimeoutException catch (e) {
