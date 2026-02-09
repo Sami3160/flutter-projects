@@ -9,6 +9,7 @@ enum BlogType {
   delete,
   getBlogs,
   getOneBlog,
+  summarizeBlog,
   updateLike,
   addComment,
   deleteComment,
@@ -101,6 +102,9 @@ class BlogAPI implements APIRequestRepresentable {
       commentId: commentId,
     );
   }
+  factory BlogAPI.summarizeBlog({required String id}){
+    return BlogAPI._(type: BlogType.summarizeBlog, id: id);
+  }
 
   @override
   String get endpoint => ApiEndpoints.baseUrl;
@@ -122,6 +126,8 @@ class BlogAPI implements APIRequestRepresentable {
         return "/blog/addComment";
       case BlogType.deleteComment:
         return "/blog/deleteComment";
+      case BlogType.summarizeBlog:
+        return "/blog/getBlogSummary";
     }
   }
 
@@ -130,6 +136,7 @@ class BlogAPI implements APIRequestRepresentable {
     switch (type) {
       case BlogType.getBlogs:
       case BlogType.getOneBlog:
+      case BlogType.summarizeBlog:
       case BlogType.updateLike:
         return HTTPMethod.get;
       default:
@@ -154,6 +161,7 @@ class BlogAPI implements APIRequestRepresentable {
           "pageSize": pageSize?.toString() ?? "10",
         };
       case BlogType.getOneBlog:
+      case BlogType.summarizeBlog:
         return {"_id": id ?? ""};
       case BlogType.updateLike:
         return {"user_id": userId ?? "", "blog_id": blogId ?? ""};

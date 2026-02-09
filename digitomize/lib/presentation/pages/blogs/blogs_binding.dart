@@ -12,5 +12,6 @@ class BlogsBinding extends Bindings {
       () => BlogController(getBlogsUseCase: Get.find()),
       fenix: true,
     );
+    // Get.lazyPut(()=>GetSummaryUsecase(Get.find<BlogRepository>()));
   }
 }

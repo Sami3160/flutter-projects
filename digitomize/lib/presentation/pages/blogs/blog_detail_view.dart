@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:digitomize/app/config/app_colors.dart';
 import 'package:digitomize/presentation/controllers/blog_detail_controller.dart';
@@ -36,18 +35,17 @@ class BlogDetailView extends GetView<BlogDetailController> {
               if (blog == null) {
                 return _buildErrorState();
               }
-              print("this is title ${controller.blog.value!.title!}");
 
               return CustomScrollView(
                 slivers: [
                   _buildSliverAppBar(blog.title, blog.thumbnailUrl),
-
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // const SizedBox(height: 16),
                           // Title
                           Text(
                             blog.title,
@@ -92,6 +90,19 @@ class BlogDetailView extends GetView<BlogDetailController> {
 
                           const SizedBox(height: 32),
 
+                          Obx(
+                            () => controller.isSummaryLoading.value
+                                ? const Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.primary,
+                                    ),
+                                  )
+                                : controller.summary.isEmpty
+                                ? _buildSummaryButton()
+                                : _buildSummary(),
+                          ),
+                          const SizedBox(height: 32),
+
                           // Comments section
                           _buildCommentsSection(blog),
 
@@ -107,6 +118,46 @@ class BlogDetailView extends GetView<BlogDetailController> {
         ],
       ),
     );
+  }
+
+  Widget _buildSummary() {
+    return Column(
+      children: [
+        Text(
+          "AI Generated Summary",
+          style: GoogleFonts.outfit(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        const SizedBox(height: 16),
+        _buildHtmlContent(controller.summary.value),
+      ],
+    );
+  }
+
+  Widget _buildSummaryButton() {
+    return SizedBox(
+      width: 200,
+      height: 48,
+      child: FloatingActionButton.extended(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      onPressed: () {
+        controller.fetchSummary();
+      },
+      backgroundColor: AppColors.primary,
+      elevation: 2,
+      icon: const Icon(Icons.auto_awesome, color: Colors.white, size: 18),
+      label: Text(
+        "View Summary",
+        style: GoogleFonts.outfit(
+          color: Colors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ));
   }
 
   Widget _buildSliverAppBar(String title, String? thumbnailUrl) {

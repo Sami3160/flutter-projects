@@ -22,5 +22,6 @@ abstract class BlogRepository {
     required String commentId,
   });
   Future<void> deleteBlog({required String userId, required String blogId});
+  Future<String> summarizeBlog(String id);
 
 }

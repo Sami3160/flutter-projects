@@ -53,4 +53,10 @@ class BlogRepositoryImpl implements BlogRepository {
   Future<void> updateLike({required String userId, required String blogId}) async{
     await BlogAPI.updateLike(userId: userId, blogId: blogId).request();
   }
+
+  @override
+  Future<String> summarizeBlog(String id) async {
+    final response = await BlogAPI.summarizeBlog(id: id).request();
+    return response['summary'];
+  }
 }
