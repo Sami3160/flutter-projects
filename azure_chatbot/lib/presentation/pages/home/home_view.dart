@@ -1,4 +1,3 @@
-
 import 'package:azure_chatbot/app/config/app_colors.dart';
 import 'package:azure_chatbot/app/core/base/base_view.dart';
 import 'package:azure_chatbot/presentation/controllers/home_controller.dart';
@@ -15,22 +14,60 @@ class HomeView extends BaseView<HomeController> {
       body: SafeArea(
         child: Column(
           children: [
-            // Header
+            // // Header
             _buildHeader(),
 
-            // Chat Messages
+            _buildMic(),
+            // // Chat Messages
             Expanded(child: _buildChatArea()),
 
-            // Current Transcript Display
+            // // Current Transcript Display
             _buildTranscriptDisplay(),
 
-            // Input Area
-            _buildInputArea(),
+            // // Input Area
+            // _buildInputArea(),
           ],
         ),
       ),
     );
   }
+
+  Widget _buildMic() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      decoration: BoxDecoration(
+        color: AppColors.surface.withOpacity(0.5),
+        border: Border(
+          bottom: BorderSide(
+            color: AppColors.primary.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+      ),
+      child: Column(
+        children: [
+          Obx(
+            () => controller.isSpeaking.value
+                ? IconButton(
+                    onPressed: () {
+                      controller.stopSpeaking();
+                    },
+                    icon: Icon(Icons.stop),
+                    color: AppColors.primary,
+                    iconSize: 124,
+                  )
+                : IconButton(
+                    onPressed: controller.startRecording,
+                    icon: Icon(Icons.mic),
+                    color: AppColors.primary,
+                    iconSize: 124,
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+  // Widget _buildTranscriptDisplay
 
   Widget _buildHeader() {
     return Container(
@@ -46,7 +83,6 @@ class HomeView extends BaseView<HomeController> {
       ),
       child: Row(
         children: [
-          // AI Avatar with glow effect
           Container(
             width: 48,
             height: 48,
@@ -136,14 +172,8 @@ class HomeView extends BaseView<HomeController> {
       return ListView.builder(
         controller: controller.scrollController,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-        itemCount:
-            controller.messages.length +
-            (controller.isProcessing.value ? 1 : 0),
+        itemCount: controller.messages.length,
         itemBuilder: (context, index) {
-          if (index == controller.messages.length) {
-            return _buildTypingIndicator();
-          }
-
           final message = controller.messages[index];
           return _buildMessageBubble(message);
         },
@@ -292,54 +322,6 @@ class HomeView extends BaseView<HomeController> {
     );
   }
 
-  Widget _buildTypingIndicator() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 0, right: 60, bottom: 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Container(
-            width: 32,
-            height: 32,
-            margin: const EdgeInsets.only(bottom: 4),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: AppColors.primaryGradient,
-            ),
-            child: const Icon(
-              Icons.smart_toy_rounded,
-              color: Colors.white,
-              size: 18,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-                bottomLeft: Radius.circular(4),
-                bottomRight: Radius.circular(20),
-              ),
-              border: Border.all(
-                color: AppColors.surfaceLight.withOpacity(0.5),
-                width: 1,
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: List.generate(3, (index) {
-                return _TypingDot(delay: index * 200);
-              }),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildTranscriptDisplay() {
     return Obx(() {
       if (controller.currentTranscript.value.isEmpty &&
@@ -392,211 +374,9 @@ class HomeView extends BaseView<HomeController> {
     });
   }
 
-  Widget _buildInputArea() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.8),
-        border: Border(
-          top: BorderSide(
-            color: AppColors.surfaceLight.withOpacity(0.5),
-            width: 1,
-          ),
-        ),
-      ),
-      child: SafeArea(
-        top: false,
-        child: Row(
-          children: [
-            // Text Input
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppColors.background,
-                  borderRadius: BorderRadius.circular(25),
-                  border: Border.all(color: AppColors.surfaceLight, width: 1),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: controller.textController,
-                        style: const TextStyle(
-                          color: AppColors.textPrimary,
-                          fontSize: 15,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: 'Type a message...',
-                          hintStyle: TextStyle(
-                            color: AppColors.textSecondary.withOpacity(0.6),
-                          ),
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 12,
-                          ),
-                        ),
-                        onSubmitted: (_) => controller.sendTextMessage(),
-                      ),
-                    ),
-                    Obx(
-                      () => controller.inputText.value.isNotEmpty
-                          ? IconButton(
-                              onPressed: controller.sendTextMessage,
-                              icon: const Icon(
-                                Icons.send_rounded,
-                                color: AppColors.primary,
-                              ),
-                            )
-                          : const SizedBox.shrink(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(width: 12),
-
-            // Mic Button
-            Obx(() => _buildMicButton()),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMicButton() {
-    final isRecording = controller.isRecording.value;
-    final isSpeaking = controller.isSpeaking.value;
-
-    return GestureDetector(
-      onTap: () {
-        if (isSpeaking) {
-          controller.stopSpeaking();
-        } else {
-          controller.toggleRecording();
-        }
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: 56,
-        height: 56,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: isRecording
-              ? LinearGradient(
-                  colors: [AppColors.error, AppColors.error.withOpacity(0.8)],
-                )
-              : isSpeaking
-              ? LinearGradient(colors: [AppColors.secondary, AppColors.primary])
-              : AppColors.primaryGradient,
-          boxShadow: [
-            BoxShadow(
-              color: (isRecording ? AppColors.error : AppColors.primary)
-                  .withOpacity(isRecording ? 0.6 : 0.4),
-              blurRadius: isRecording ? 20 : 12,
-              spreadRadius: isRecording ? 4 : 2,
-            ),
-          ],
-        ),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            // Pulse animation when recording
-            if (isRecording)
-              TweenAnimationBuilder<double>(
-                tween: Tween(begin: 1.0, end: 1.3),
-                duration: const Duration(milliseconds: 800),
-                curve: Curves.easeInOut,
-                builder: (context, value, child) {
-                  return Container(
-                    width: 56 * value,
-                    height: 56 * value,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.error.withOpacity(0.3 / value),
-                    ),
-                  );
-                },
-              ),
-            Icon(
-              isSpeaking
-                  ? Icons.stop_rounded
-                  : isRecording
-                  ? Icons.mic_off_rounded
-                  : Icons.mic_rounded,
-              color: Colors.white,
-              size: 28,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   String _formatTime(DateTime time) {
     final hour = time.hour.toString().padLeft(2, '0');
     final minute = time.minute.toString().padLeft(2, '0');
     return '$hour:$minute';
-  }
-}
-
-// Animated typing dot widget
-class _TypingDot extends StatefulWidget {
-  final int delay;
-
-  const _TypingDot({required this.delay});
-
-  @override
-  State<_TypingDot> createState() => _TypingDotState();
-}
-
-class _TypingDotState extends State<_TypingDot>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 600),
-      vsync: this,
-    );
-
-    _animation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
-
-    Future.delayed(Duration(milliseconds: widget.delay), () {
-      if (mounted) {
-        _controller.repeat(reverse: true);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (context, child) {
-        return Container(
-          width: 8,
-          height: 8,
-          margin: const EdgeInsets.symmetric(horizontal: 3),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.primary.withOpacity(0.4 + _animation.value * 0.6),
-          ),
-        );
-      },
-    );
   }
 }

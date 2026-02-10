@@ -78,9 +78,9 @@ class SpeechService extends GetxService {
         soundLevel.value = level;
       },
       listenFor: const Duration(seconds: 30),
-      pauseFor: const Duration(seconds: 3),
+      pauseFor: const Duration(seconds: 5),
       partialResults: true,
-      cancelOnError: true,
+      cancelOnError: false,
       listenMode: ListenMode.dictation,
     );
   }

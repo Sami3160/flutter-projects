@@ -28,6 +28,10 @@ class HomeController extends BaseController {
   // Text controller for manual input
   final TextEditingController textController = TextEditingController();
   final ScrollController scrollController = ScrollController();
+  // mic state listening | idle
+  final RxString micState = 'idle'.obs;
+  // speaker state answering | idle
+  final RxString speakerState = 'idle'.obs;
 
   // Observable states
   final RxList<ChatMessage> messages = <ChatMessage>[].obs;
@@ -78,6 +82,14 @@ class HomeController extends BaseController {
       await _ttsService.stop();
     }
 
+    // Cancel any in-progress speech session first
+    if (_speechService.isListening.value) {
+      await _speechService.cancelListening();
+    }
+
+    // Small delay to let the recognizer fully clean up
+    await Future.delayed(const Duration(milliseconds: 300));
+
     currentTranscript.value = '';
     errorMessage.value = '';
 
@@ -114,7 +126,6 @@ class HomeController extends BaseController {
     messages.add(ChatMessage(text: userMessage, isUser: true));
 
     // Clear text input
-    textController.clear();
     currentTranscript.value = '';
 
     // Scroll to bottom
