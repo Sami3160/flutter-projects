@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_demo/data/places.dart';
+import 'package:responsive_demo/models/place.dart';
 import 'package:responsive_demo/widgets/drawer_widget.dart';
+import 'package:responsive_demo/widgets/place_details_widget.dart';
 import 'package:responsive_demo/widgets/place_gallery_widget.dart';
 import 'package:responsive_demo/widgets/responsive_widget.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+  @override
+  State<StatefulWidget> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  Place selectedPlace = allPlaces[0];
+  void changePlace(Place place) => setState(() => selectedPlace = place);
 
   @override
   Widget build(BuildContext context) {
@@ -20,22 +30,33 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildMobileWidget() =>
+      PlaceGalleryWidget(onPlaceChanged: changePlace);
+
+  Widget _buildDesktopWidget() => Row(
+    children: [
+      Expanded(child: DrawerWidget()),
+      Expanded(flex: 3, child: _buildBody()),
+    ],
+  );
+
+  Widget _buildTabletWidget() => Row(
+    children: [
+      Expanded(flex: 2, child: DrawerWidget()),
+      Expanded(flex: 5, child: PlaceGalleryWidget(onPlaceChanged: changePlace)),
+    ],
+  );
+
+  Widget _buildBody() => Column(
+    children: [
+      Expanded(
+        child: PlaceGalleryWidget(
+          isHorizantal: true,
+          onPlaceChanged: changePlace,
+        ),
+      ),
+      Expanded(flex: 2, child: PlaceDetailsWidget(place: selectedPlace)),
+    ],
+  );
 }
-
-Widget _buildMobileWidget() => Container(child: const PlaceGalleryWidget());
-
-Widget _buildDesktopWidget() => Container(
-  width: double.infinity,
-  height: double.infinity,
-  color: Colors.blue,
-  child: const Center(
-    child: Text("desktop", style: TextStyle(fontSize: 24, color: Colors.white)),
-  ),
-);
-
-Widget _buildTabletWidget() => Row(
-  children: [
-    Expanded(flex: 2, child: DrawerWidget()),
-    Expanded(flex: 5, child: PlaceGalleryWidget()),
-  ],
-);
