@@ -1,6 +1,7 @@
 import 'package:all_about_routes/pages/page2.dart';
 import 'package:all_about_routes/pages/page3.dart';
 import 'package:all_about_routes/pages/page4.dart';
+import 'package:all_about_routes/pages/page5.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {
@@ -16,19 +17,19 @@ class RouteGenerator {
         return _errorRoute();
       case "/page4":
         return MaterialPageRoute(builder: (_) => Page4());
+      case "/page5":
+        return MaterialPageRoute(builder: (_) => const Page5());
       default:
         return _errorRoute();
     }
   }
 
-  static Route<dynamic> _errorRoute(){
-    return MaterialPageRoute(builder: (_) => Scaffold(
-      appBar: AppBar(
-        title: Text("Error"),
+  static Route<dynamic> _errorRoute() {
+    return MaterialPageRoute(
+      builder: (_) => Scaffold(
+        appBar: AppBar(title: Text("Error")),
+        body: Center(child: Text("Error")),
       ),
-      body: Center(
-        child: Text("Error"),
-      ),
-    ));
+    );
   }
 }

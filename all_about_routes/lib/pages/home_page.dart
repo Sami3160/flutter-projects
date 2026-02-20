@@ -12,42 +12,58 @@ class HomePage extends StatelessWidget {
         children: [
           ElevatedButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Page1()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Page1()),
+              );
             },
             child: Text('Classic navigation'),
           ),
-          SizedBox(height: 10,),
+          SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Page1()));
+              Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (context) => Page1()));
             },
             child: Text('Navigation of()'),
           ),
-          SizedBox(height: 10,),ElevatedButton(
+          SizedBox(height: 10),
+          ElevatedButton(
             onPressed: () {
               Navigator.of(context).pushNamed("/page2");
               // Navigator.push(context, MaterialPageRoute(builder: (context) => Page1()));
             },
             child: Text('Navigation named'),
           ),
-          SizedBox(height: 10,),
-          SizedBox(height: 10,),ElevatedButton(
+          SizedBox(height: 10),
+          SizedBox(height: 10),
+          ElevatedButton(
             onPressed: () {
               Navigator.of(context).pushNamed("/page3");
               // Navigator.push(context, MaterialPageRoute(builder: (context) => Page1()));
             },
             child: Text('pass static data'),
           ),
-          SizedBox(height: 10,),
-          SizedBox(height: 10,),ElevatedButton(
+          SizedBox(height: 10),
+          SizedBox(height: 10),
+          ElevatedButton(
             onPressed: () {
-              Navigator.of(context).pushNamed("/page4",arguments: "page 4 dynamic data");
+              Navigator.of(
+                context,
+              ).pushNamed("/page4", arguments: "page 4 dynamic data");
               // Navigator.push(context, MaterialPageRoute(builder: (context) => Page1()));
             },
             child: Text('pass dynamic data'),
           ),
-          SizedBox(height: 10,),
-
+          SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed("/page5");
+            },
+            child: Text('Nested routing'),
+          ),
+          SizedBox(height: 10),
         ],
       ),
     );
