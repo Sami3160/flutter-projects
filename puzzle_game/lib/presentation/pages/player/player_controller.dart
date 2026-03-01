@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:puzzle_game/domain/entities/tile.dart';
@@ -8,10 +10,11 @@ class PlayerController extends GetxController {
   var tiles = <Tile>[].obs;
   var tries = 0.obs;
   var matchedPairs = 0.obs;
-
+  Timer? timer;
   int firstSelectedIndex = -1;
   int secondSelectedIndex = -1;
   bool isProcessing = false;
+  RxInt time = 0.obs;
 
   final List<IconData> _icons = [
     Icons.star,
@@ -22,6 +25,13 @@ class PlayerController extends GetxController {
     Icons.apple,
     Icons.abc,
     Icons.food_bank,
+    Icons.cabin,
+    Icons.mouse,
+    Icons.soup_kitchen,
+    Icons.route,
+    Icons.face,
+    Icons.biotech,
+    Icons.cake,
   ];
 
   @override
@@ -33,8 +43,24 @@ class PlayerController extends GetxController {
     } else {
       level.value = 1;
     }
+    switch (level.value) {
+      case 1:
+        initGame(2, 2);
+        break;
+      case 2:
+        initGame(4, 4);
+        break;
+      case 3:
+        initGame(6, 5);
+        break;
+    }
+    startTimer();
+  }
 
-    initGame(4, 4);
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      time++;
+    });
   }
 
   void initGame(int row, int col) {
@@ -52,6 +78,26 @@ class PlayerController extends GetxController {
     firstSelectedIndex = -1;
     secondSelectedIndex = -1;
     isProcessing = false;
+  }
+
+  void reset() {
+    switch (level.value) {
+      case 1:
+        initGame(2, 2);
+        break;
+      case 2:
+        initGame(4, 4);
+        break;
+      case 3:
+        initGame(4, 4);
+        break;
+    }
+    timer?.cancel();
+    time.value = 0;
+    startTimer();
+  }
+  bool isCompleted(){
+    return matchedPairs.value == tiles.length ~/ 2;
   }
 
   void onTileTapped(int index) async {
@@ -89,5 +135,14 @@ class PlayerController extends GetxController {
 
       tiles.refresh();
     }
+    if (isCompleted()) {
+      timer?.cancel();
+    }
+  }
+
+  @override
+  void onClose() {
+    timer?.cancel();
+    super.onClose();
   }
 }
