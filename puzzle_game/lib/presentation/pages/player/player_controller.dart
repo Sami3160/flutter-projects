@@ -10,6 +10,7 @@ class PlayerController extends GetxController {
   var tiles = <Tile>[].obs;
   var tries = 0.obs;
   var matchedPairs = 0.obs;
+  bool showAnimation=false;
   Timer? timer;
   int firstSelectedIndex = -1;
   int secondSelectedIndex = -1;
@@ -136,6 +137,12 @@ class PlayerController extends GetxController {
       tiles.refresh();
     }
     if (isCompleted()) {
+      showAnimation=true;
+      tiles.refresh();
+      Future.delayed(const Duration(seconds: 3), () {
+        showAnimation=false;
+        tiles.refresh();
+      });
       timer?.cancel();
     }
   }

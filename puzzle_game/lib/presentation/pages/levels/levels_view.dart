@@ -129,13 +129,13 @@ class LevelsView extends GetView<LevelsController> {
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   shrinkWrap: true,
                   children: [
-                    _buildLevelTile(level: 1, title: "Easy 4x4", onTap: (){
+                    _buildLevelTile(level: 1, title: "Easy 2x2", onTap: (){
                       Get.toNamed(AppRoutes.PLAYER, arguments: {"level": 1});
                     }, color: Colors.green),
-                    _buildLevelTile(level: 2, title: "Medium 5x5", onTap: (){
+                    _buildLevelTile(level: 2, title: "Medium 4x4", onTap: (){
                       Get.toNamed(AppRoutes.PLAYER, arguments: {"level": 2});
                     }, color: Colors.yellow),
-                    _buildLevelTile(level: 3, title: "Hard 6x6", onTap: (){
+                    _buildLevelTile(level: 3, title: "Hard 6x5", onTap: (){
                       Get.toNamed(AppRoutes.PLAYER, arguments: {"level": 3});
                     }, color: Colors.red),
                   ],
