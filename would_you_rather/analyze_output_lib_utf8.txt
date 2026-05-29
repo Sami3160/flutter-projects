@@ -1,0 +1,27 @@
+﻿Analyzing lib...                                                
+
+   info - The type parameter name 'Type' matches a visible type name - lib\app\core\usecases\no_param_usecase.dart:1:31 - avoid_types_as_parameter_names
+   info - The type parameter name 'Type' matches a visible type name - lib\app\core\usecases\pram_usecase.dart:1:29 - avoid_types_as_parameter_names
+   info - Don't invoke 'print' in production code - lib\data\providers\network\api_provider.dart:26:5 - avoid_print
+   info - Don't invoke 'print' in production code - lib\data\providers\network\api_provider.dart:35:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\data\providers\network\api_provider.dart:38:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\data\providers\network\api_provider.dart:41:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\data\providers\network\api_provider.dart:44:7 - avoid_print
+   info - An uninitialized field should have an explicit type annotation - lib\data\providers\network\api_provider.dart:72:9 - prefer_typing_uninitialized_variables
+   info - Missing type annotation - lib\data\providers\network\api_provider.dart:72:9 - strict_top_level_inference
+   info - An uninitialized field should have an explicit type annotation - lib\data\providers\network\api_provider.dart:73:9 - prefer_typing_uninitialized_variables
+   info - Missing type annotation - lib\data\providers\network\api_provider.dart:73:9 - strict_top_level_inference
+   info - An uninitialized field should have an explicit type annotation - lib\data\providers\network\api_provider.dart:74:9 - prefer_typing_uninitialized_variables
+   info - Missing type annotation - lib\data\providers\network\api_provider.dart:74:9 - strict_top_level_inference
+   info - The imported package 'shared_preferences_web' isn't a dependency of the importing package - lib\generated_plugin_registrant.dart:7:8 - depend_on_referenced_packages
+   info - The imported package 'flutter_web_plugins' isn't a dependency of the importing package - lib\generated_plugin_registrant.dart:9:8 - depend_on_referenced_packages
+   info - Don't invoke 'print' in production code - lib\main.dart:15:3 - avoid_print
+   info - Don't invoke 'print' in production code - lib\main.dart:17:3 - avoid_print
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\registration\registration_page.dart:55:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\registration\registration_page.dart:57:60 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\registration\registration_page.dart:60:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\registration\registration_page.dart:84:51 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\result\result_page.dart:49:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\result\result_page.dart:51:60 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\result\result_page.dart:59:64 - deprecated_member_use
+
